@@ -1,0 +1,115 @@
+// LAB#7  Huallpa Quino Mauricio Rodrigo        ETN307//
+/*2 Encontrar la desviación media del conjunto de datos predictive_maintence.csv y 
+    comparar con la media. */
+#include <iostream>
+#include <string>
+#include <string.h>
+#include <sstream>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <math.h>
+#include <conio.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+int main()
+{
+	cout<<"\n\t ////////////////////////////////////////////////////////";
+	cout<<"\n\t // LAB7:                                      ETN307L //";
+	cout<<"\n\t // Univ. Huallpa Quino Mauricio Rodrigo               //";
+	cout<<"\n\t //////////////////////////////////////////////////////// \n";
+	cout<<"\n\t 2 Encontrar la desviacion media del conjunto de datos predictive_maintence.csv y   ";
+	cout<<"\n\t   comparar con la media. \n";
+	system("color 3F");
+	
+	ifstream archivo("predictivemaintenance.csv");   //abro el archivo csv//
+	string line,UDI,ProductID,Type,Airtemperature,Processtemperature,Rotationalspeed,Torque,Toolwear,Target,FailureType;  //declaro variables para los encabezados//
+	
+	vector<string>a;   
+	vector<string>b;     
+	vector<string>c;     
+	vector<string>d;
+	vector<string>e;   // Declaramos los vectores que almacenaran cada columna //
+	vector<float>f;
+	vector<float>g;
+	vector<string>h;
+	vector<string>i;
+	vector<string>j;
+	
+	getline(archivo,line);    //descarto la linea de los encabezados//
+	
+	while(!archivo.eof())  //mientra no haya terminado el archivo//
+	{
+		getline(archivo,UDI,',');  
+		a.push_back(UDI);
+		getline(archivo,ProductID,',');    
+		b.push_back(ProductID);
+		getline(archivo,Type,',');  
+		c.push_back(Type);
+		getline(archivo,Airtemperature,',');  
+		d.push_back(Airtemperature);
+		getline(archivo,Processtemperature,','); // traslado los datos de las columnas a los vectores respectivamente// 
+		e.push_back(Processtemperature);
+		getline(archivo,Rotationalspeed,',');  
+		f.push_back(stof(Rotationalspeed));  //extraemos los datos como flotantes para el analisis//
+		getline(archivo,Torque,',');  
+		g.push_back(stof(Torque));    //extraemos los datos como flotantes para el analisis//
+		getline(archivo,Toolwear,',');  
+		h.push_back(Toolwear);
+		getline(archivo,Target,',');  
+		i.push_back(Target);
+		getline(archivo,FailureType,'\n');  
+		j.push_back(FailureType);
+	}
+
+	int n1=f.size();   // igualamos a n el tamaño de los terminos registrados en el vector//
+	int n2=g.size();
+	float aux1,media1=0,media2=0,varianza1=0, varianza2=0, D_estandar1=0,D_estandar2=0, suma1=0, suma2=0;
+	float *RS=&f[0], *TQ=&g[0];    //Transferimos el contenido de los vectores a los arreglos//
+	
+	for(int i=0;i<n1;++i){
+		suma1 += RS[i];      //suma de terminos //
+	}
+	media1=suma1/n1;        //para la media aritmetica//
+	for(int i=0;i<n1;++i){
+		varianza1 = varianza1+pow((RS[i]-media1),2);    //para la varianza//
+	}
+	D_estandar1=sqrt(varianza1/(n1-1));  //sacamos la desviacion estandar//
+	
+	cout<<"\t ==================================================================== ";
+	
+	cout<<"\n\t ->  Calculos con los datos de Velocidad rotacional\n"; //mostramos los resultados//
+	cout<<"\n\t Media : "<<media1;
+	cout<<"\n\t Varianza : "<<varianza1;
+	cout<<"\n\t Desviacion estandar : "<<D_estandar1;
+	
+	cout<<"\n\t ==================================================================== ";
+	
+	for(int i=0;i<n2;++i){
+		suma2 += TQ[i];  //suma de terminos //
+	}
+	media2=suma2/n2;    //para la media aritmetica//
+	for(int i=0;i<n2;++i){
+		varianza2 = varianza2+pow((TQ[i]-media2),2);   //para la varianza//
+	}
+	D_estandar2=sqrt(varianza2/(n2-1));  //sacamos la desviacion estandar//
+	cout<<"\n\t ==================================================================== ";
+	
+	cout<<"\n\t -> Calculos con los datos de Torque\n"; //mostramos los resultados//
+	cout<<"\n\t Media : "<<media2;
+	cout<<"\n\t Varianza : "<<varianza2;
+	cout<<"\n\t Desviacion estandar : "<<D_estandar2;
+	
+	cout<<"\n\t ==================================================================== ";
+	cout<<endl;
+	/*for(int i=0;i<n1;i++){
+		cout<<RS[i]<<" - ";   //arreglos TQ y RS
+	} */
+	archivo.close(); //cerramos el archivo
+
+	getch();
+	return 0;
+}
