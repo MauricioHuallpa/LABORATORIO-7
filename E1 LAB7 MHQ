@@ -1,0 +1,80 @@
+// LAB#7  Huallpa Quino Mauricio Rodrigo        ETN307//
+/*1 Encontrar la media, el valor máximo, el valor mínimo, la magnitud promedio,  
+    varianza , desviación estándar de un conjunto de datos POTENCIA.CSV y y ordenar en 
+    forma ascendente */
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <math.h>
+#include <conio.h>
+
+using namespace std;
+
+int main()
+{
+	cout<<"\n\t ////////////////////////////////////////////////////////";
+	cout<<"\n\t // LAB7:                                      ETN307L //";
+	cout<<"\n\t // Univ. Huallpa Quino Mauricio Rodrigo               //";
+	cout<<"\n\t //////////////////////////////////////////////////////// \n";
+	cout<<"\n\t 1 Encontrar la media, el valor maximo, el valor minimo, la magnitud promedio,   ";
+	cout<<"\n\t   varianza , desviacion estandar de un conjunto de datos POTENCIA.CSV y y ordenar   ";
+	cout<<"\n\t   en forma ascendente \n";
+	system("color 3F");
+	
+	ifstream archivo("potencia.csv");   //abro el archivo csv//
+	string linea, sensores,datos,fecha;   //declaro variables para los encabezados//
+	
+	vector<string>a;    //vector para la columna de sensores//
+	vector<float>b;     //vector para la columna de datos//
+	vector<float>c;     //vector para la columna de fecha//
+	
+	getline(archivo,linea);    //descarto la linea de los encabezados//
+	
+	while(!archivo.eof())  //mientra no haya terminado el archivo//
+	{
+		getline(archivo,sensores,';');  //agarro los datos de la columna de nombres de sensores y lo introdusco al vector//
+		a.push_back(sensores);
+		getline(archivo,datos,';');  //agarro los datos de la columna de datos y lo introdusco al vector transformando el string a float//
+		b.push_back(stof(datos));
+		getline(archivo,fecha,'\n');  //agarro los datos de la columna de fechas y lo introdusco al vector transformando el string a float//
+		c.push_back(stof(fecha));
+	}
+
+	int n=b.size();    // igualamos a n el tamaño de los terminos registrados en el vector//
+	float aux1,media1=0,cont1=0,cont2=0,moda1, varianza=0;
+	float *x=&b[0];    //Transferimos el contenido del vector a un arreglo//
+	
+	cout<<"\n\t -> La Cantidad de datos registrados es : "<<n<<endl;
+	
+	for(int i=0;i<n;i++){
+		media1 += x[i];	   //sumamos todos los terminos//
+	}
+	
+	cout<<"\n\t -> Los calculos realizados con los datos son \n";
+	cout<<"\n\t ==================================================================== ";
+	
+	cout<<"\n\t Suma de los terminos : ";   //para mostrar la suma total de los terminos//
+	cout<<(media1);
+	cout<<"\n\t Media Aritmetica es : ";   //mostramos la media aritmetica o promedio//
+	cout<<(media1)*1.0/n;
+	
+	for(int i=0;i<n;i++)
+	{
+		varianza= varianza + pow((x[i]-(media1*1.0/n)),2.0);     //para la varianza //
+	}
+	cout<<"\n\t La varianza es : "<<varianza; // la varianza se expresa asi//
+	
+	cout<<"\n\t La desviacion estandar es : "<<sqrt(varianza/(n-1));   //la desviacion estandar es la raiz de la varianza
+	cout<<"\n\t ==================================================================== ";
+	cout<<endl;
+	
+	/*for(int i=0;i<n;i++){
+		cout<<b[i]<<" - ";
+	} */
+	archivo.close();  //cerramos el archivo//
+	getch();
+	return 0;
+}
