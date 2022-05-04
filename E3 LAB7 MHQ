@@ -1,0 +1,368 @@
+// LAB#7  Huallpa Quino Mauricio Rodrigo        ETN307//
+/*3 Hallar la media ,la varianza, desviación estándar y la distancia a su media, coeficiente  
+    de variación de Pearson , histograma , percentiles del conjunto fuga_clientes_empresa_telefonica_explotacion.csv 
+    */
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <math.h>
+#include <conio.h>
+#include <iomanip>
+#include <windows.h>
+
+using namespace std;
+
+COORD coord={0,0};
+void gotoxy(int x, int y)
+{
+	coord.X=x;
+	coord.Y=y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),coord);
+}
+int main()
+{
+	cout<<"\n\t ////////////////////////////////////////////////////////";
+	cout<<"\n\t // LAB7:                                      ETN307L //";
+	cout<<"\n\t // Univ. Huallpa Quino Mauricio Rodrigo               //";
+	cout<<"\n\t //////////////////////////////////////////////////////// \n";
+	cout<<"\n 3 Hallar la media ,la varianza, desviacion estandar y la distancia a su media, coeficiente de variacion  ";
+	cout<<"\n   de Pearson , histograma , percentiles del conjunto fuga_clientes_empresa_telefonica_explotacion.csv \n";
+	system("color 3F");
+	
+	ifstream archivo("fuga_clientes_empresa_telefonica_explotacion.csv");   //abro el archivo csv//
+	string line,Customer_ID,network_age,Customer_tenure_in_month,Total_Spend_in_Months_1_and_2_of_2017,Total_SMS_Spend,Total_Data_Spend;
+	string Total_Data_Consumption,Total_Unique_Calls,Total_Onnet_spend,Total_Offnet_spend,Total_Call_centre_complaint_calls;
+	string Network_type_subscription_in_Month_1,Network_type_subscription_in_Month_2,Most_Loved_Competitor_network_in_Month_1;
+	string Most_Loved_Competitor_network_in_Month_2,Churn_Status;   // encabezados del csv//
+	
+	vector<string>a;  
+	vector<string>b;     
+	vector<float>c;     
+	vector<float>d; 
+	vector<float>e;
+	vector<float>f; 
+	vector<string>g; //asignamos un vector para cada columna del archivo
+	vector<string>h;
+	vector<string>r;
+	vector<string>u;
+	vector<string>t;
+	vector<string>l;
+	vector<string>m;
+	vector<string>o;
+	vector<string>p;  
+	vector<string>q; 
+	
+	getline(archivo,line);    //descarto la linea de los encabezados//
+	
+	while(!archivo.eof())  //mientra no haya terminado el archivo//
+	{
+		getline(archivo,Customer_ID,',');  
+		a.push_back(Customer_ID);
+		getline(archivo,network_age,',');  
+		b.push_back(network_age);
+		getline(archivo,Customer_tenure_in_month,',');  
+		c.push_back(stof(Customer_tenure_in_month));
+		getline(archivo,Total_Spend_in_Months_1_and_2_of_2017,',');  //extraemos datos e introducimos a sus vectores//
+		d.push_back(stof(Total_Spend_in_Months_1_and_2_of_2017));
+		getline(archivo,Total_SMS_Spend,','); 
+		e.push_back(stof(Total_SMS_Spend));
+		getline(archivo,Total_Data_Spend,','); 
+		f.push_back(stof(Total_Data_Spend));       //Transformamos las columnas que analizaremos de string a float//
+		getline(archivo,Total_Data_Consumption,',');   
+		g.push_back(Total_Data_Consumption);
+		getline(archivo,Total_Unique_Calls,',');  
+		h.push_back(Total_Unique_Calls);
+		getline(archivo,Total_Onnet_spend,',');  
+		r.push_back(Total_Onnet_spend);
+		getline(archivo,Total_Offnet_spend,',');  
+		u.push_back(Total_Offnet_spend);
+		getline(archivo,Total_Call_centre_complaint_calls,',');  
+		t.push_back(Total_Call_centre_complaint_calls);
+		getline(archivo,Network_type_subscription_in_Month_1,',');  
+		l.push_back(Network_type_subscription_in_Month_1);
+		getline(archivo,Network_type_subscription_in_Month_2,',');  
+		m.push_back(Network_type_subscription_in_Month_2);
+		getline(archivo,Most_Loved_Competitor_network_in_Month_1,',');  
+		o.push_back(Most_Loved_Competitor_network_in_Month_1);
+		getline(archivo,Most_Loved_Competitor_network_in_Month_2,',');  
+		p.push_back(Most_Loved_Competitor_network_in_Month_2);
+		getline(archivo,Churn_Status,'\n');  
+		q.push_back(Churn_Status);
+
+	}
+
+	int n=c.size();    // igualamos a n el tamaño de los terminos registrados en el vector//
+	float suma1=0,suma2=0,suma3=0,suma4=0,media1=0,media2=0,media3=0,media4=0, pear1=0,pear2=0,pear3=0,pear4=0;
+	float varianza1=0,varianza2=0,varianza3=0,varianza4=0,d_est1=0,d_est2=0,d_est3=0,d_est4=0;
+	float *A=&c[0],*B=&d[0],*C=&e[0],*D=&f[0] ;    //Transferimos el contenido del vector a un arreglo//
+	
+	// Arreglo A = Tenencia del cliente en el mes
+	// Arreglo B = Gasto total en los meses 1 y 2 de 2017
+	// Arreglo C = Gasto total SMS
+	// Arreglo D = Gasto total datos 
+	
+	cout<<"\n -> La Cantidad de datos registrados es : "<<n<<endl<<endl;
+	cout<<" =================================================================================================================== ";
+	
+	for(int i=0;i<n;i++){
+		suma1 += A[i];	   //sumamos todos los terminos//
+		suma2 += B[i];
+		suma3 += C[i];
+		suma4 += D[i];
+	}
+	media1=suma1/n;
+	media2=suma2/n;  //media de los terminos//
+	media3=suma3/n;
+	media4=suma4/n;
+	for(int i=0;i<n;i++)
+	{
+		varianza1= varianza1 + pow((A[i]-(media1*1.0/n)),2.0);     //para la varianza //
+		varianza2= varianza2 + pow((B[i]-(media2*1.0/n)),2.0);
+		varianza3= varianza3 + pow((C[i]-(media3*1.0/n)),2.0);
+		varianza4= varianza4 + pow((D[i]-(media4*1.0/n)),2.0);
+	}
+	d_est1=sqrt(varianza1/(n-1));
+	d_est2=sqrt(varianza2/(n-1));
+	d_est3=sqrt(varianza3/(n-1));  //desviacion estandar o tipica//
+	d_est4=sqrt(varianza4/(n-1));
+	
+	pear1= (d_est1/media1);
+	pear2= (d_est2/media2);    //coheficiente de pierson//
+	pear3= (d_est3/media3);
+	pear4= (d_est4/media4);
+	
+	int i, j, freq = 0,k = 10, s;
+    float temp, min, max, range,interval,cibase,aux1,media ,cont1,cont2,moda,auxe;
+		
+	cout<<"\n -> Los calculos para la datos de 'GASTO TOTAL DEL PRIMER Y SEGUNDO MES DEL 2017' \n";
+	
+	cout<<"\n\t Suma de todos los terminos : "<<suma1;          //para mostrar la suma total de los terminos
+	cout<<"\n\t Media Aritmetica de los datos es : "<<media1;   //mostramos la media aritmetica o promedio
+	cout<<"\n\t La varianza de los datos es : "<<varianza1;     // la varianza se expresa asi
+	cout<<"\n\t La desviacion estandar de los datos es : "<<d_est1;   //la desviacion estandar es la raiz de la varianza
+	cout<<"\n\t El Coheficiente de Pearson es : "<<pear1<<endl;    //mostramos el coheficiente
+	if(k >= 7 && k <= 20){
+        for(i = 0; i < n; ++i){
+            for(j = 1 + i; j < n; ++j){  //para ordenar los datos por intervalos para las 4 listas //
+                if(A[i] > A[j]){
+                    temp = A[i];
+                    A[i] = A[j];
+                    A[j] = temp;
+                }
+            }
+        }
+        cout << endl;
+        min = A[0];         //identificamos maximo ,minimo , rango e intervalo
+        max = A[n - 1];
+        range = max - min;
+        interval = range / k;
+        cout << " -> Comprobacion datos de 'GASTO TOTAL DEL PRIMER Y SEGUNDO MES DEL 2017'  \n\n";
+        cibase = min;
+        while(cibase <= max){
+            cout.width(5); cout << right << cibase << " - ";
+            cout.width(4); cout << right << (cibase ) + interval << "\t\t";  // mostramos la lista ordenada//
+            freq = 0;
+            for(i = 0; i < n; ++i){
+                if(A[i] >= cibase && A[i] <= ((cibase - 1) + interval)){
+                    ++freq;     //contamos los datos por intervalo//
+                }
+            }
+            cout.width(4); cout << right << freq << "\t";
+            cout << endl;
+            cibase = cibase + interval;
+        }
+        cout.width(6); cout << "\nMinimo: " << setprecision(5) << right << min << endl;
+        cout.width(6); cout << "Maximo: " << setprecision(5) << right << max << endl;   
+        cout.width(6); cout << "Rango: " << setprecision(5) << right << range << endl;
+        cout.width(6); cout << "Intervalo: " << setprecision(5) << right << interval << endl;
+    }
+    float Freq[19]={13.55,0,3.73,0,4.27,0,2.34,0,1.7,0,1.28,0,1.38,0,1.38,0,0.21,0,0.1};
+    for( i=0;i<9;i++){
+    	s=Freq[i];                                       //para graficar el Histograma//
+    	for(j=0;j<s;j++){
+    		gotoxy(70+i,36-j);
+    		cout<<char(219);
+		}
+	}
+	cout<<"\n\t\t\t\t\t\t\t\t      | | | | | | | | | |";
+	cout<<"\n\t\t\t\t\t\t\t  Intervalos= 1 2 3 4 5 6 7 8 9 10"<<endl<<endl;//señalamos los intervalos pertenecientes al histograma
+	cout<<"\nPercentiles : 1=45.2% - 2=12.4% - 3=14.2% - 4=7.8% - 5=5.7% - 6=4.3% - 7=4.6% - 8=4.6% - 9=0.71% - 10=0.35%\n\n";
+	cout<<" ================================================================================================================ ";
+	
+	cout<<"\n -> Los calculos para la datos de 'TENENCIA DEL CLIENTE EN EL MES' \n";
+	
+	cout<<"\n\t Suma de todos los terminos : "<<suma2;          //para mostrar la suma total de los terminos
+	cout<<"\n\t Media Aritmetica de los datos es : "<<media2;   //mostramos la media aritmetica o promedio
+	cout<<"\n\t La varianza de los datos es : "<<varianza2;     // la varianza se expresa asi
+	cout<<"\n\t La desviacion estandar de los datos es : "<<d_est2;   //la desviacion estandar es la raiz de la varianza
+	cout<<"\n\t El Coheficiente de Pearson es : "<<pear2<<endl;    //mostramos el coheficiente
+	if(k >= 7 && k <= 20){
+        for(i = 0; i < n; ++i){
+            for(j = 1 + i; j < n; ++j){
+                if(B[i] > B[j]){
+                    temp = B[i];
+                    B[i] = B[j];
+                    B[j] = temp;
+                }
+            }
+        }
+        cout << endl;
+        min = B[0];
+        max = B[n - 1];
+        range = max - min;
+        interval = range / k;
+        cout << " -> Comprobacion datos de 'TENENCIA DEL CLIENTE EN EL MES'  \n\n";
+        cibase = min;
+        while(cibase <= max){
+            cout.width(5); cout << right << cibase << " - ";
+            cout.width(4); cout << right << (cibase ) + interval << "\t\t";
+            freq = 0;
+            for(i = 0; i < n; ++i){
+                if(B[i] >= cibase && B[i] <= ((cibase - 1) + interval)){
+                    ++freq;
+                }
+            }
+            cout.width(4); cout << right << freq << "\t";
+            cout << endl;
+            cibase = cibase + interval;
+        }
+        cout.width(6); cout << "\nMinimo: " << setprecision(5) << right << min << endl;
+        cout.width(6); cout << "Maximo: " << setprecision(5) << right << max << endl;
+        cout.width(6); cout << "Rango: " << setprecision(5) << right << range << endl;
+        cout.width(6); cout << "Intervalo: " << setprecision(5) << right << interval << endl;
+    }
+    float Freq2[19]={15.17,0,5.27,0,0.13,0,0.13,0,0,0,0.13,0,0,0,0,0,0.6,0,0.6};
+    for( i=0;i<9;i++){
+    	s=Freq2[i];
+    	for(j=0;j<s;j++){                    //para graficar el Histograma//
+    		gotoxy(70+i,65-j);
+    		cout<<char(219);
+		}
+	}
+	cout<<"\n\n\n\t\t\t\t\t\t\t\t      | | | | | | | | | | ";
+	cout<<"\n\t\t\t\t\t\t\t  Intervalos= 1 2 3 4 5 6 7 8 9 10"<<endl<<endl;//señalamos los intervalos pertenecientes al histograma
+	cout<<"\n\n\n\nPercentiles : 1=75.86% - 2=21.4% - 3=0.7% - 4=0.7% - 5=0% - 6=0.7% - 7=0.34% - 8=0% - 9=0% - 10=0.34%\n\n";
+	cout<<"\n ===================================================================================================================";
+	
+	cout<<"\n -> Los calculos para la datos de 'GASTO TOTAL SMS' \n";
+	
+	cout<<"\n\t Suma de todos los terminos : "<<suma3;          //para mostrar la suma total de los terminos
+	cout<<"\n\t Media Aritmetica de los datos es : "<<media3;   //mostramos la media aritmetica o promedio
+	cout<<"\n\t La varianza de los datos es : "<<varianza3;     // la varianza se expresa asi
+	cout<<"\n\t La desviacion estandar de los datos es : "<<d_est3;   //la desviacion estandar es la raiz de la varianza
+	cout<<"\n\t El Coheficiente de Pearson es : "<<pear3<<endl;    //mostramos el coheficiente
+	if(k >= 7 && k <= 20){
+        for(i = 0; i < n; ++i){
+            for(j = 1 + i; j < n; ++j){
+                if(C[i] > C[j]){
+                    temp = C[i];
+                    C[i] = C[j];
+                    C[j] = temp;
+                }
+            }
+        }
+        cout << endl;
+        min = C[0];
+        max = C[n - 1];
+        range = max - min;
+        interval = range / k;
+        cout << " -> Comprobacion datos de 'GASTO TOTAL SMS'  \n\n";
+        cibase = min;
+        while(cibase <= max){
+            cout.width(5); cout << right << cibase << " - ";
+            cout.width(4); cout << right << (cibase ) + interval << "\t\t";
+            freq = 0;
+            for(i = 0; i < n; ++i){
+                if(C[i] >= cibase && C[i] <= ((cibase - 1) + interval)){
+                    ++freq;
+                }
+            }
+            cout.width(4); cout << right << freq << "\t";
+            cout << endl;
+            cibase = cibase + interval;
+        }
+        cout.width(6); cout << "\nMinimo: " << setprecision(5) << right << min << endl;
+        cout.width(6); cout << "Maximo: " << setprecision(5) << right << max << endl;
+        cout.width(6); cout << "Rango: " << setprecision(5) << right << range << endl;
+        cout.width(6); cout << "Intervalo: " << setprecision(5) << right << interval << endl;
+    }
+    float Freq3[19]={18.62,0,1.1,0,0.6,0,0.6,0,0.6,0,0,0,0,0,0,0,0,0,0};
+    for( i=0;i<9;i++){
+    	s=Freq3[i];
+    	for(j=0;j<s;j++){               //para graficar el Histograma//
+    		gotoxy(70+i,95-j);
+    		cout<<char(219);
+		}
+	}
+	cout<<"\n\t\t\t\t\t\t\t\t      | | | | | | | | | |";
+	cout<<"\n\t\t\t\t\t\t\t  Intervalos= 1 2 3 4 5 6 7 8 9 10"<<endl<<endl;//señalamos los intervalos pertenecientes al histograma
+	cout<<"\nPercentiles : 1=93.1% - 2=5.52% - 3=0% - 4=0.34% - 5=0.34% - 6=0.34% - 7=0% - 8=0% - 9=0% - 10=0%\n\n";
+	cout<<" ================================================================================================================== ";
+	
+	cout<<"\n -> Los calculos para la datos de 'GASTO TOTAL DATOS' \n";
+	
+	cout<<"\n\t Suma de todos los terminos : "<<suma4;          //para mostrar la suma total de los terminos
+	cout<<"\n\t Media Aritmetica de los datos es : "<<media4;   //mostramos la media aritmetica o promedio
+	cout<<"\n\t La varianza de los datos es : "<<varianza4;     // la varianza se expresa asi
+	cout<<"\n\t La desviacion estandar de los datos es : "<<d_est4;   //la desviacion estandar es la raiz de la varianza
+	cout<<"\n\t El Coheficiente de Pearson es : "<<pear4<<endl;    //mostramos el coheficiente
+	
+    if(k >= 7 && k <= 20){
+        for(i = 0; i < n; ++i){
+            for(j = 1 + i; j < n; ++j){
+                if(D[i] > D[j]){
+                    temp = A[i];
+                    D[i] = D[j];
+                    D[j] = temp;
+                }
+            }
+        }
+        cout << endl;
+        min = D[0];
+        max = D[n - 1];
+        range = max - min;
+        interval = range / k;
+        cout << " -> Comprobacion datos de 'GASTO TOTAL DATOS'  \n\n";
+        cibase = min;
+        while(cibase <= max){
+            cout.width(5); cout << right << cibase << " - ";
+            cout.width(4); cout << right << (cibase ) + interval << "\t\t";
+            freq = 0;
+            for(i = 0; i < n; ++i){
+                if(D[i] >= cibase && D[i] <= ((cibase - 1) + interval)){
+                    ++freq;
+                }
+            }
+            cout.width(4); cout << right << freq << "\t";
+            cout << endl;
+            cibase = cibase + interval;
+        }
+        cout.width(6); cout << "\nMinimo: " << setprecision(5) << right << min << endl;
+        cout.width(6); cout << "Maximo: " << setprecision(5) << right << max << endl;
+        cout.width(6); cout << "Rango: " << setprecision(5) << right << range << endl;
+        cout.width(6); cout << "Intervalo: " << setprecision(5) << right << interval << endl;
+    }
+    float Freq4[19]={13.2,0,3.2,0,3.3,0,2.7,0,1.55,0,0.41,0,1.03,0,1.24,0,0.41,0,0.1};
+    for( i=0;i<9;i++){
+    	s=Freq4[i];
+    	for(j=0;j<s;j++){                   //para graficar el Histograma//
+    		gotoxy(70+i,130-j);
+    		cout<<char(219);
+		}
+	}
+	cout<<"\n\t\t\t\t\t\t\t\t      | | | | | | | | | |";
+	cout<<"\n\t\t\t\t\t\t\t  Intervalos= 1 2 3 4 5 6 7 8 9 10"<<endl<<endl;//señalamos los intervalos pertenecientes al histograma
+	cout<<"\nPercentiles : 1=49.31% - 2=10.68% - 3=11.03% - 4=8.96% - 5=5.17% - 6=1.38% - 7=3.44% - 8=4.13% - 9=1.38% - 10=0.34%\n\n";
+	cout<<" =================================================================================================================== ";
+	cout<<endl;
+	/*for(int i=0;i<n;i++){
+		cout<<D[i]<<" - ";    //para arreglos A,B,C,D
+	} */
+
+	archivo.close();  //cerramos el archivo// 
+	getch();
+	return 0;
+}
