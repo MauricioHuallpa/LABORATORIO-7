@@ -1,0 +1,71 @@
+// LAB#7  Huallpa Quino Mauricio Rodrigo        ETN307//
+/* 8. Hallar la regresión lineal simple de los datos de altura y peso de la siguiente tabla
+      Hallar los coeficientes b1,b2 */
+
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+int main()
+{
+    //Declaracion de variables 
+   int n=12,i;
+   float b1,b2,sumax,sumay,sumaxy,sumax2;
+   float x[n]={74,92,63,72,58,78,85,85,73,62,80,72};
+   float y[n]={168,196,170,175,162,169,190,186,176,170,176,179};
+   system("color 3F");
+   
+    cout<<"\n\t ////////////////////////////////////////////////////////";
+	cout<<"\n\t // LAB7:                                      ETN307L //";
+	cout<<"\n\t // Univ. Huallpa Quino Mauricio Rodrigo               //";
+	cout<<"\n\t //////////////////////////////////////////////////////// \n";
+	cout<<"\n 8. Hallar la regresion lineal simple de los datos de altura y peso de la siguiente tabla \n";
+	cout<<"\n\t               ------------------------";
+	cout<<"\n\t               | PESO=X      ALTURA=Y |";
+	cout<<"\n\t               ------------------------";
+	cout<<"\n\t               |  74 ------------ 168 |";
+	cout<<"\n\t               |  92 ------------ 196 |";
+	cout<<"\n\t               |  63 ------------ 170 |";
+	cout<<"\n\t               |  72 ------------ 175 |";
+	cout<<"\n\t               |  58 ------------ 162 |";
+	cout<<"\n\t               |  78 ------------ 169 |";
+	cout<<"\n\t               |  85 ------------ 190 |";
+	cout<<"\n\t               |  85 ------------ 186 |";
+	cout<<"\n\t               |  73 ------------ 176 |";
+	cout<<"\n\t               |  62 ------------ 170 |";
+	cout<<"\n\t               |  80 ------------ 176 |";
+	cout<<"\n\t               |  72 ------------ 179 |";
+	cout<<"\n\t               ------------------------\n";
+
+	cout<<"\n\t -> Hallar los coeficientes b1,b2 de  Y=b2+b1X";
+	cout<<"\n\n\t ===========================================================================";
+	
+  
+   // Hacemos las sumatorias 
+   sumax=sumay=sumaxy=sumax2=0;
+   for (i=0;i<n;i++)
+   {
+   // suma de los produtos//
+        sumaxy += x[i]*y[i];
+    //  suma de los valores de x^2//
+        sumax2 += x[i]*x[i];
+    //suma de los valores de x//
+        sumax += x[i];
+    //suma de los valores de y//
+        sumay += y[i];
+   }
+   // Calculamos la pendiente (m) y la interseccion (b)//
+
+   b1 = (n*sumaxy - sumax*sumay) / (n*sumax2 - sumax*sumax);
+   b2 = (sumay - b1*sumax) / n;
+
+   // Mostramos los valores de la pendiente y de la interseccion
+   printf("\n\n\t  pendiente(b1) = %f \n\t  Interseccion(b2) = %f",b1,b2);
+  
+   // la formula para calcular la variable dependiente(Y) es:
+   printf("\n\n\t  Valor de la variable dependiente es Y = %f*X + (%f)\n\n",b1,b2);
+   
+   cout<<"\t ===========================================================================\n";
+   system("pause");
+}
